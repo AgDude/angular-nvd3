@@ -380,7 +380,12 @@
                         if (!_['html']) wrapElement.text(_.text);
 
                         if (_.enable) {
-                            if (name === 'title') element.prepend(wrapElement);
+                            // If this element exists, remove it (this can happen on fast subsequent refreshes
+                            var oldElement = d3.select(element[0]).select('.' + name + '.' + _.className );
+                            if ( !oldElement.empty() ){
+                                oldElement.remove();
+                            }
+                            if (name === 'title') element.append(wrapElement);
                             else if (name === 'subtitle') angular.element(element[0].querySelector('.title')).after(wrapElement);
                             else if (name === 'caption') element.append(wrapElement);
                         }
